@@ -1,37 +1,35 @@
 var express = require('express');
-var postRouter = express.Router();
+var router = express.Router();
 var Post = require('../models/post.model');
 
-
-
-postRouter.get('/posts', function(req, res){
-  Post.find({}, function(err, documents){
+router.get('/posts', function(req, res){
+  Post.find({}, function(err, posts){
     if(err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(200).json({
-        posts: documents
+        posts: posts
       });
     }
   });
 });
-postRouter.get('/posts/:id', function(req, res){
-  Post.find({_id: req.params.id}, function(err, documents){
+router.get('/posts/:id', function(req, res){
+  Post.find({_id: req.params.id}, function(err, posts){
     if(err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(200).json({
-        users: documents
+        posts: posts
       });
     }
   });
 });
-postRouter.post('/posts', function(req, res){
-  var user = new Post(req.body);
+router.post('/posts', function(req, res){
+  var post = new Post(req.body);
   post.save(function(err){
     if(err){
       res.status(500).json({
@@ -39,25 +37,25 @@ postRouter.post('/posts', function(req, res){
       });
     } else {
       res.status(201).json({
-        msg: 'Successfully created a new post'
+        msg: 'Created a post successfully'
       });
     }
   });
 });
-postRouter.put('/posts/:id', function(req, res){
-  Post.findOneAndUpdate({_id: req.params.id}, req.body, function(err, document){
+router.put('/posts/:id', function(req, res){
+  Post.findOneAndUpdate({_id: req.params.id}, req.body, function(err, post){
     if(err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(200).json({
-        msg: 'Successfully updated'
+        msg: 'Successfully updated post'
       });
     }
   });
 });
-postRouter.delete('/posts/:id', function(req, res){
+router.delete('/posts/:id', function(req, res){
   Post.remove({_id: req.params.id}, function(err){
     if(err){
       res.status(500).json({
@@ -70,5 +68,4 @@ postRouter.delete('/posts/:id', function(req, res){
     }
   });
 });
-
-module.exports = postRouter;
+module.exports = router;
