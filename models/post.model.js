@@ -1,23 +1,22 @@
 var mongoose = require('mongoose');
 
 var postSchema = mongoose.Schema({
-  title: {
+  title:{
     type: String,
     required: true,
   },
   body: {
     type: String,
-    required: true,
+    required: true
   },
   created: {
     type: Date,
-    required: Date.now,
+    default: Date.now
   },
   updated: {
     type: Date,
-    required: Date.now,
-  },
-
+    default: Date.now
+  }
 });
 
 var Post = mongoose.model('Post', postSchema);

@@ -1,36 +1,8 @@
 var express = require('express');
-var userRouter = express.Router();
+var router = express.Router();
 var User = require('../models/user.model');
 
-
-
-userRouter.get('/users', function(req, res){
-  User.find({}, function(err, documents){
-    if(err){
-      res.status(500).json({
-        msg: err
-      });
-    } else {
-      res.status(200).json({
-        users: documents
-      });
-    }
-  });
-});
-userRouter.get('/users/:id', function(req, res){
-  User.find({_id: req.params.id}, function(err, documents){
-    if(err){
-      res.status(500).json({
-        msg: err
-      });
-    } else {
-      res.status(200).json({
-        users: documents
-      });
-    }
-  });
-});
-userRouter.post('/login', function(req, res){
+router.post('/signup', function(req, res){
   var user = new User(req.body);
   user.save(function(err){
     if(err){
@@ -39,36 +11,67 @@ userRouter.post('/login', function(req, res){
       });
     } else {
       res.status(201).json({
-        msg: 'Successfully created a new todo'
+        msg: 'You successfully signed up'
       });
     }
   });
 });
-userRouter.put('/users/:id', function(req, res){
-  Todo.findOneAndUpdate({_id: req.params.id}, req.body, function(err, document){
+router.post('/login', function(req, res){
+  res.status(200).json({
+    msg: 'logging in'
+  });
+});
+router.get('/users', function(req, res){
+  User.find({}, function(err, users){
     if(err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(200).json({
-        msg: 'Successfully updated'
+        users:users
       });
     }
   });
 });
-userRouter.delete('/users/:id', function(req, res){
-  Todo.remove({_id: req.params.id}, function(err){
+router.get('/users/:id', function(req, res){
+  User.find({_id: req.params.id}, function(err, users){
     if(err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(200).json({
-        msg: 'Successfully deleted'
+        users: users
+      });
+    }
+  });
+});
+router.put('/users/:id', function(req, res){
+  User.findOneAndUpdate({_id: req.params.id}, req.body, function(err, user){
+    if(err){
+      res.status(500).json({
+        msg: err
+      });
+    } else {
+      res.status(200).json({
+        msg: 'Successfully updated a user'
+      });
+    }
+  });
+});
+router.delete('/users/:id', function(req, res){
+  User.remove({_id: req.params.id}, function(err){
+    if(err){
+      res.status(500).json({
+        msg: err
+      });
+    } else {
+      res.status(200).json({
+        msg: 'Successfully deleted a user'
       });
     }
   });
 });
 
-module.exports = userRouter;
+module.exports = router;
